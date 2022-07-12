@@ -20,7 +20,7 @@ jobs:
         
     - name: Step04
       env: 
-        name: Ab
+        name: testnew
       run: |
           pwd
           ls -la
