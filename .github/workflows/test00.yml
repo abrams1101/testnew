@@ -1,0 +1,28 @@
+name: Test00
+on: push
+
+jobs: 
+  build:
+    name: Test00
+    runs-on: ubuntu-latest
+    steps:
+    - name: Step01
+      uses: actions/checkout@v2
+      
+    - name: Step02
+      run: ls -la
+      
+    - name: Step03
+      uses: actions/checkout@v2
+      with:
+        repository: abrams1101/node-app
+        path: .test/node
+        
+    - name: Step04
+      env: 
+        name: Ab
+      run: |
+          pwd
+          ls -la
+          ls .test
+          echo Iam${name}
