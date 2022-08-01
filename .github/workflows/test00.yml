@@ -1,6 +1,5 @@
 name: Test00
 on: 
-  push:
   workflow_dispatch:
 jobs: 
   build:
