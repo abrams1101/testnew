@@ -1,6 +1,10 @@
 name: Test00
-on: 
-  workflow_dispatch:
+on:
+  pull_request:
+    branches: 
+      - main
+    types: [closed]
+
 jobs: 
   build:
     name: Test00
@@ -11,18 +15,3 @@ jobs:
       
     - name: Step02
       run: ls -la
-      
-    - name: Step03
-      uses: actions/checkout@v2
-      with:
-        repository: abrams1101/node-app
-        path: .test/node
-        
-    - name: Step04
-      env: 
-        name: testnew
-      run: |
-          pwd
-          ls -la
-          ls .test
-          echo Iam${name}
