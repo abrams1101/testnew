@@ -1,5 +1,6 @@
 name: Test00
 on:
+  push:
   pull_request:
     branches: 
       - main
