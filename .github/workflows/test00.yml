@@ -43,7 +43,7 @@ jobs:
       with:
         REPOSITORY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_REPO_NAME: ecr_build_images
-        IMAGE_TAG: ${ env.BRANCH_NAME }
+        IMAGE_TAG: latest
         COMMIT_HASH: ${{ github.sha }}
         BUILD_TIMESTAMP: ${{ steps.timestamp.outputs.timestamp }}
       
