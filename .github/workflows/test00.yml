@@ -38,17 +38,10 @@ jobs:
 
     - name: Step02
       uses: abrams1101/gh_actions/ecr@main
-      
-    - name: Build, tag, and push image to Amazon ECR
-      env:
+      with:
         REPOSITORY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_REPO_NAME: edison-custom-infra-container
         IMAGE_TAG: latest
         COMMIT_HASH: ${{ github.sha }}
         BUILD_TIMESTAMP: ${{ steps.timestamp.outputs.timestamp }}
-      run: |
-        docker build --no-cache --build-arg REPOSITORY=$REPOSITORY -t $IMAGE_REPO_NAME:$IMAGE_TAG .
-        docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY/$IMAGE_REPO_NAME:$IMAGE_TAG
-        docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY/$IMAGE_REPO_NAME:$BUILD_TIMESTAMP-$COMMIT_HASH
-        docker push $REPOSITORY/$IMAGE_REPO_NAME:$IMAGE_TAG
-        docker push $REPOSITORY/$IMAGE_REPO_NAME:$BUILD_TIMESTAMP-$COMMIT_HASH
+      
