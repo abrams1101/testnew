@@ -10,4 +10,4 @@ jobs:
       uses: actions/checkout@v2
       
     - name: Step02
-      uses: ./.github/actions/gh_actions/actions/ecr
+      uses: ./.github/actions/gh_actions
