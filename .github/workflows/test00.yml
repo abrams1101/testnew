@@ -3,6 +3,7 @@ on: [push]
 
 env:
   US_AWS_REGION : "us-east-1"
+  BRANCH_NAME: "${{ github.ref_name }}"
   
 # Required to get the ID Token that will be used for OIDC
 permissions:
@@ -42,7 +43,7 @@ jobs:
       with:
         REPOSITORY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_REPO_NAME: ecr_build_images
-        IMAGE_TAG: ${GITHUB_REF##*/}
+        IMAGE_TAG: ${ env.BRANCH_NAME }
         COMMIT_HASH: ${{ github.sha }}
         BUILD_TIMESTAMP: ${{ steps.timestamp.outputs.timestamp }}
       
