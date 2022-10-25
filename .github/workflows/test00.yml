@@ -1,28 +1,9 @@
 name: Test00
 on: [push]
 
-jobs: 
-  build:
-    name: Test00
-    runs-on: ubuntu-latest
-    steps:
-    - name: Step01
-      uses: actions/checkout@v2
-      
-    - name: Step02
-      uses: abrams1101/gh_actions/ecr@main
-
-
-name: Global Dev NewRelic ECR Deployment
-on: 
-  push:
-    branches:
-      - dev
 env:
   US_AWS_REGION : "us-east-1"
-  AP_AWS_REGION : "ap-southeast-1"
-  EU_AWS_REGION : "eu-west-1"
-
+  
 # Required to get the ID Token that will be used for OIDC
 permissions:
   id-token: write
@@ -30,7 +11,7 @@ permissions:
 
 jobs:
   deploy_us:
-    name: NewRelic Infra ECR deployment on US region
+    name: ECR deployment on US region
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -55,6 +36,9 @@ jobs:
       id: timestamp
       run: echo "::set-output name=timestamp::$(date +%Y%m%d%S)"
 
+    - name: Step02
+      uses: abrams1101/gh_actions/ecr@main
+      
     - name: Build, tag, and push image to Amazon ECR
       env:
         REPOSITORY: ${{ steps.login-ecr.outputs.registry }}
