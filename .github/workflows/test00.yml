@@ -1,6 +1,5 @@
 name: Test00
-on:
-  pull_request:
+on: [push]
 
 jobs: 
   build:
