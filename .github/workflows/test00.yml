@@ -1,5 +1,11 @@
 name: Test00
-on: [push]
+on: 
+  push:
+    branches:
+      - 'test-**'
+      - '1.x'
+    tags:
+      - '1.**'
 
 env:
   US_AWS_REGION : "us-east-1"
