@@ -11,3 +11,60 @@ jobs:
       
     - name: Step02
       uses: abrams1101/gh_actions/ecr@main
+
+
+name: Global Dev NewRelic ECR Deployment
+on: 
+  push:
+    branches:
+      - dev
+env:
+  US_AWS_REGION : "us-east-1"
+  AP_AWS_REGION : "ap-southeast-1"
+  EU_AWS_REGION : "eu-west-1"
+
+# Required to get the ID Token that will be used for OIDC
+permissions:
+  id-token: write
+  contents: read    # This is required for actions/checkout
+
+jobs:
+  deploy_us:
+    name: NewRelic Infra ECR deployment on US region
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+    # Uses our OIDC AWS Provider to retrieve credentials useful for this run, the credentials are scoped to a repository name and branch
+    # the main branch is the only branch that's trusted to fetch administrator credentials, all the other branches can retrieve read-only
+    # creds for the run, this can be changed on AWS side if there's an special use case.
+    - name: Checkout repo
+      uses: actions/checkout@v2
+  
+    - name: Configure AWS credentials
+      id: aws_credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ secrets.OIDC_ROLE }}
+        aws-region: ${{ env.US_AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Get current timestamp
+      id: timestamp
+      run: echo "::set-output name=timestamp::$(date +%Y%m%d%S)"
+
+    - name: Build, tag, and push image to Amazon ECR
+      env:
+        REPOSITORY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_REPO_NAME: edison-custom-infra-container
+        IMAGE_TAG: latest
+        COMMIT_HASH: ${{ github.sha }}
+        BUILD_TIMESTAMP: ${{ steps.timestamp.outputs.timestamp }}
+      run: |
+        docker build --no-cache --build-arg REPOSITORY=$REPOSITORY -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+        docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY/$IMAGE_REPO_NAME:$IMAGE_TAG
+        docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY/$IMAGE_REPO_NAME:$BUILD_TIMESTAMP-$COMMIT_HASH
+        docker push $REPOSITORY/$IMAGE_REPO_NAME:$IMAGE_TAG
+        docker push $REPOSITORY/$IMAGE_REPO_NAME:$BUILD_TIMESTAMP-$COMMIT_HASH
