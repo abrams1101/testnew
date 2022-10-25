@@ -40,8 +40,8 @@ jobs:
       uses: abrams1101/gh_actions/ecr@main
       with:
         REPOSITORY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_REPO_NAME: edison-custom-infra-container
-        IMAGE_TAG: latest
+        IMAGE_REPO_NAME: 	ecr_build_images
+        IMAGE_TAG: ${GITHUB_REF££*/}
         COMMIT_HASH: ${{ github.sha }}
         BUILD_TIMESTAMP: ${{ steps.timestamp.outputs.timestamp }}
       
