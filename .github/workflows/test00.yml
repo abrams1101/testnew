@@ -6,7 +6,7 @@ on:
       - 'test'
       - 'test-**'
     tags:
-      - '*'
+      - 'v**'
 
 env:
   US_AWS_REGION : "us-east-1"
