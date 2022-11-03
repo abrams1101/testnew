@@ -43,10 +43,15 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
-      
+
+    - name: Get current timestamp
+      id: timestamp
+      run: echo "::set-output name=timestamp::$(date +%Y%m%d%S)"
+
     - name: Step02
       uses: abrams1101/gh_actions/ecr@test
       with:
         REPOSITORY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_REPO_NAME: ecr_build_images
         IMAGE_TAG: ${{ env.BRANCH_NAME }}
+        BUILD_TIMESTAMP: ${{ steps.timestamp.outputs.timestamp }}
