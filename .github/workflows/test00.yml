@@ -40,8 +40,13 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      
     - name: Step02
       uses: abrams1101/gh_actions/ecr@test
       with:
+        REPOSITORY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_REPO_NAME: ecr_build_images
         IMAGE_TAG: ${{ env.BRANCH_NAME }}
