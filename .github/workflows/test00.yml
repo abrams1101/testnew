@@ -1,9 +1,8 @@
 name: Test00
 on:
-  pull_request:
+  push:
     branches: 
-      - main
-    types: [closed]
+      - test
 
 jobs: 
   build:
@@ -14,4 +13,14 @@ jobs:
       uses: actions/checkout@v2
       
     - name: Step02
+      run: ls -la
+
+    - name: Checkout actions
+      uses: actions/checkout@v2
+      with:
+        repository: abrams1101/gh_actions
+        ref: test
+        path: .github/actions/gh_actions
+        
+    - name: step03
       run: ls -la
