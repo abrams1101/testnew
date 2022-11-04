@@ -13,7 +13,8 @@ jobs:
       uses: actions/checkout@v2
       
     - name: Step02
-      run: ls -la
+      run: |
+        pwd && ls -la
 
     - name: Checkout actions
       uses: actions/checkout@v2
@@ -39,7 +40,7 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
 
     - name: Step02
-      uses: ./.github/actions/gh_actions/ecr@test
+      uses: ./.github/actions/gh_actions/ecr
       with:
         REPOSITORY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_REPO_NAME: ecr_build_images
