@@ -23,4 +23,5 @@ jobs:
         path: .github/actions/gh_actions
         
     - name: step03
-      run: ls -la
+      run: |
+        cd .github/actions/gh_actions && ls -la
