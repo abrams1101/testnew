@@ -24,7 +24,7 @@ jobs:
         
     - name: step03
       run: |
-        cd .github/actions/gh_actions && ls -la
+        cd .github/actions/gh_actions/ecr && ls -la
         
     - name: Configure AWS credential
       id: aws_credentials
@@ -39,7 +39,7 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
 
     - name: Step02
-      uses: ./.github/actions/ecr@test
+      uses: ./.github/actions/gh_actions/ecr@test
       with:
         REPOSITORY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_REPO_NAME: ecr_build_images
