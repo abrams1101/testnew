@@ -43,4 +43,4 @@ jobs:
 
     - name: Copy files to the test website with the AWS CLI
       run: |
-        aws wafv2 list-ip-sets 
+        aws wafv2 list-ip-sets  --scope REGIONAL
