@@ -1,1 +1,46 @@
 
+name: Test00
+on: 
+  push:
+    branches:
+      - main
+      - 'test'
+      - 'test-**'
+    tags:
+      - '*'
+
+env:
+  US_AWS_REGION : "us-east-1"
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
+  
+# Required to get the ID Token that will be used for OIDC
+permissions:
+  id-token: write
+  contents: read    # This is required for actions/checkout
+
+jobs:
+  deploy_us:
+    name: ECR deployment on US region
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+    # Uses our OIDC AWS Provider to retrieve credentials useful for this run, the credentials are scoped to a repository name and branch
+    # the main branch is the only branch that's trusted to fetch administrator credentials, all the other branches can retrieve read-only
+    # creds for the run, this can be changed on AWS side if there's an special use case.
+    - name: Checkout repo
+      uses: actions/checkout@v2
+  
+    - name: Step02
+      run: ls -la
+
+    - name: Configure AWS credential
+      id: aws_credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Copy files to the test website with the AWS CLI
+      run: |
+        aws wafv2 list-ip-sets 
