@@ -43,4 +43,4 @@ jobs:
 
     - name: Copy files to the test website with the AWS CLI
       run: |
-        aws wafv2 get-ip-set --name test --scope REGIONAL --id 22b65a0b-e3c7-4dfa-b24c-c69cff1a2d2b --query IPSet[].Addresses[]
+        aws wafv2 get-ip-set --name test --scope REGIONAL --id 22b65a0b-e3c7-4dfa-b24c-c69cff1a2d2b --query 'IPSet[*].Addresses[*]'
